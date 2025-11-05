@@ -1,4 +1,21 @@
 <!DOCTYPE html>
+<script>
+    // 🖼️ Ajout automatique des images générées dans les blocs de catégories
+    document.addEventListener("DOMContentLoaded", () => {
+        // Image Fruités 🍓
+        document.querySelector('.block[data-category="fruites"] img').src =
+            "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/1.png";
+
+        // Image Gourmands 🍫
+        document.querySelector('.block[data-category="gourmands"] img').src =
+            "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/2.png";
+
+        // Image Tabacs 🚬
+        document.querySelector('.block[data-category="tabacs"] img').src =
+            "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/3.png";
+    });
+</script>
+
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
