@@ -1,35 +1,63 @@
 <!DOCTYPE html>
-<script>
-    // 🖼️ Ajout automatique des images générées dans les blocs de catégories
-    document.addEventListener("DOMContentLoaded", () => {
-        // Image Fruités 🍓
-        document.querySelector('.block[data-category="fruites"] img').src =
-            "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/1.png";
 
-        // Image Gourmands 🍫
-        document.querySelector('.block[data-category="gourmands"] img').src =
-            "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/2.png";
-
-        // Image Tabacs 🚬
-        document.querySelector('.block[data-category="tabacs"] img').src =
-            "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/3.png";
-    });
-    <div class="block" data-category="fruites" onclick="showLiquids('fruites')">
-    <img src="" alt="Fruités">
-    <h2>Fruités</h2>
-</div>
-
-<div class="block" data-category="gourmands" onclick="showLiquids('gourmands')">
-    <img src="" alt="Gourmands">
-    <h2>Gourmands</h2>
-</div>
-
-<div class="block" data-category="tabacs" onclick="showLiquids('tabacs')">
-    <img src="" alt="Tabacs">
-    <h2>Tabacs</h2>
 </div>
 
 </script>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catalogue Liquides</title>
+  <style>
+    .block {
+      text-align: center;
+      margin: 20px;
+    }
+    .block img {
+      width: 200px; /* tu peux ajuster la taille ici */
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🧩 Tes blocs de catégories -->
+  <div class="block" data-category="fruites" onclick="showLiquids('fruites')">
+    <img src="" alt="Fruités">
+    <h2>Fruités</h2>
+  </div>
+
+  <div class="block" data-category="gourmands" onclick="showLiquids('gourmands')">
+    <img src="" alt="Gourmands">
+    <h2>Gourmands</h2>
+  </div>
+
+  <div class="block" data-category="tabacs" onclick="showLiquids('tabacs')">
+    <img src="" alt="Tabacs">
+    <h2>Tabacs</h2>
+  </div>
+
+  <!-- 🖼️ Script pour ajouter les images -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Image Fruités 🍓
+      document.querySelector('.block[data-category="fruites"] img').src =
+        "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/1.png";
+
+      // Image Gourmands 🍫
+      document.querySelector('.block[data-category="gourmands"] img').src =
+        "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/2.png";
+
+      // Image Tabacs 🚬
+      document.querySelector('.block[data-category="tabacs"] img').src =
+        "https://files.oaiusercontent.com/file-00000000ed5471f5bb6fae045fbc25d0/3.png";
+    });
+  </script>
+</body>
+</html>
 
 <html lang="fr">
 <head>
