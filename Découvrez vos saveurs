@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QR interactif — Découvrez vos saveurs</title>
+  <style>
+    :root{--accent:#6b46c1;--bg:#f5f1e6;--card:#fff}
+    body{font-family:Inter,system-ui,Arial;background:var(--bg);margin:0;padding:20px;color:#111}
+    .container{max-width:980px;margin:0 auto}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+    h1{margin:0;font-size:1.6rem}
+    .controls{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+    select,input[type=text]{padding:8px;border-radius:8px;border:1px solid #ddd}
+    button{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(20,20,40,0.06);display:grid;grid-template-columns:160px 1fr;gap:12px;align-items:center;transition:transform 0.2s, box-shadow 0.2s;}
+    .card:hover{transform:scale(1.02);box-shadow:0 12px 24px rgba(20,20,40,0.12);}
+    .img{width:160px;height:160px;border-radius:10px;overflow:hidden;background:#eee;display:flex;align-items:center;justify-content:center;color:#666}
+    .img img{width:100%;height:100%;object-fit:cover;transition:transform 0.2s;}
+    .img:hover img{transform:scale(1.05);}
+    .meta{display:flex;flex-direction:column;gap:8px}
+    .flavor{font-weight:700;font-size:1.1rem}
+    .actions{display:flex;gap:8px}
+    .secondary{background:#fff;color:var(--accent);border:1px solid #e2d9f8}
+    footer{margin-top:18px;font-size:0.9rem;color:#444}
+    .small{font-size:0.85rem;color:#666}
+    .favorites{margin-top:12px}
+    .fav-item{padding:8px;border-radius:8px;background:#fff;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+    .qr-box{display:flex;gap:12px;align-items:center}
+    @media(max-width:640px){.card{grid-template-columns:1fr}} 
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Découvrez vos saveurs</h1>
+        <div class="small">Choisissez un goût, visualisez sa photo et sauvegardez vos favoris</div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <label>
+        Catégorie:
+        <select id="categorySelect">
+          <option value="random">Aléatoire</option>
+          <option value="fruites">Fruités</option>
+          <option value="gourmands">Gourmands</option>
+          <option value="tabacs">Tabacs</option>
+        </select>
+      </label>
+      <button id="pickBtn">Choisir un goût</button>
+      <button id="newBtn" class="secondary">Nouveau goût</button>
+      <button id="likeBtn">J'aime ❤️</button>
+
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <input id="hostUrl" type="text" placeholder="Entrez l'URL publique de cette page pour générer un QR" style="width:320px" />
+        <button id="genQr">Générer QR</button>
+      </div>
+    </div>
+
+    <main>
+      <div id="cardArea" class="card" aria-live="polite">
+        <div class="img" id="imgPlaceholder"><img src="https://placehold.co/300x300?text=Image+du+liquide" alt="aperçu"/></div>
+        <div class="meta">
+          <div class="flavor" id="flavorLabel">Appuyez sur "Choisir un goût"</div>
+          <div class="actions">
+            <button id="likeBtn2">J'aime ❤️</button>
+            <button id="newBtn2" class="secondary">Nouveau goût</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="favorites">
+        <h3>Goûts aimés</h3>
+        <div id="favList"><div class="small">Aucun pour l'instant</div></div>
+        <div style="margin-top:8px">
+          <button id="exportFav">Exporter CSV</button>
+          <button id="clearFav" class="secondary">Effacer</button>
+        </div>
+      </section>
+
+      <section style="margin-top:18px">
+        <h3>QR code</h3>
+        <div class="qr-box">
+          <img id="qrImg" alt="QR code" src="" style="width:120px;height:120px;border-radius:8px;background:#fff;padding:6px;display:none" />
+          <div class="small">Entrez l'URL publique et cliquez sur "Générer QR". Placez ensuite ce QR sur une affiche pour que vos clients scannent.</div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="small">Les goûts aimés sont enregistrés localement sur cet appareil.</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const catalog = {
+      fruites: [
+        {name:'Fraise, Pitaya',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/jNBO2uKExDrUZRyYQ5S6.jpg'},
+        {name:'Framboise, Cassis, FRAIS',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/CntTgf208Kr2Pf5KAzUH.jpg'},
+        {name:'Grenadine, Framboise, FRAIS',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/vwQHuIrn12i0gO5tdmLy.jpg'},
+        {name:'Fraise des bois, Cerise',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/gHuFIWZeDNVTVCpSMQDU.jpg'},
+        {name:'Fruits des bois, FRAIS',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/FtP4KzgBi3h53NQwTPcg.jpg'},
+        {name:'Mûre, Litchi, FRAIS',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/3KS7k7bUbIm834cYN1qn.jpg'},
+        {name:'Fruits rouges',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/gQv38iG8WBNvr5wIyHNp.jpg'},
+        {name:'Poire, Mangue',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/kHokWuQn3NK1vm4kS4KH.jpg'},
+        {name:'Banane, Fraise, Rétro',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/EZNhu33GbBHSYm2Ea7vV.jpg'},
+        {name:'Cassis, Fleurs de cerisier, FRAIS',img:'https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/3ttAFprW0MIEfdbZs1va/pub/XqI2F5af3Q4VFoQz
